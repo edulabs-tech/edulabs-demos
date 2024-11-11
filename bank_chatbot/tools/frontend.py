@@ -5,11 +5,11 @@ from langchain_core.messages import HumanMessage, AIMessage
 from bank_chatbot.tools.backend import agent_executor
 
 
-def interact_with_langchain_agent(prompt, messages):
+def interact_with_langchain_agent(thread_id, prompt, messages):
     messages.append(ChatMessage(role="user", content=prompt))
     for event in agent_executor.stream(
         {"messages": [HumanMessage(content=prompt)]},
-        config={"configurable": {"thread_id": "abc123"}},
+        config={"configurable": {"thread_id": thread_id}},
         stream_mode="values"
     ):
         last_message = event["messages"][-1]
@@ -29,16 +29,17 @@ def interact_with_langchain_agent(prompt, messages):
 
 if __name__ == "__main__":
     with gr.Blocks() as demo:
-        gr.Markdown("# Chat with a LangChain Agent 🦜⛓️ and see its thoughts 💭")
+        gr.Markdown("# Chat with a LangChain Agent ⛓️ and see its thoughts 💭")
+        thread_textbox = gr.Textbox(placeholder="Thread ID")
         chatbot = gr.Chatbot(
             type="messages",
             label="Agent",
             avatar_images=(
                 None,
-                "https://em-content.zobj.net/source/twitter/141/parrot_1f99c.png",
-            ),
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4qGp0_wJsHQuVb_F7Lz0mVlMu81-4lf2rsw&s"
+            )
         )
         textbox = gr.Textbox(lines=1, label="Chat Message")
-        textbox.submit(interact_with_langchain_agent, [textbox, chatbot], [textbox, chatbot])
+        textbox.submit(interact_with_langchain_agent, [thread_textbox, textbox, chatbot], [textbox, chatbot])
 
     demo.launch()

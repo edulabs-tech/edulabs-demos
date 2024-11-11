@@ -1,6 +1,6 @@
 import gradio as gr
 
-from bank_chatbot.basics.general_info import invoke_llm, stream_llm, invoke_with_trim
+from bank_chatbot.basics.backend import invoke_llm, stream_llm, invoke_with_trim
 
 if __name__ == "__main__":
     with gr.Blocks(fill_height=True) as demo:
@@ -21,5 +21,3 @@ if __name__ == "__main__":
 
         )
     demo.launch(share=False)
-
-# test

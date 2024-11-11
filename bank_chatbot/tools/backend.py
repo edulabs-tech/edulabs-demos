@@ -10,8 +10,11 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain_core.messages import SystemMessage
 
+from bank_chatbot.tools.income_tax_tool import calculate_income_tax
+
 load_dotenv()
 
+# Add memory to the process
 memory = MemorySaver()
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
@@ -28,7 +31,7 @@ vectorstore = InMemoryVectorStore.from_documents(
 retriever = vectorstore.as_retriever()
 
 
-# # Build tool
+# Build tool
 retriever_tool = create_retriever_tool(
     retriever,
     "Mortgage-Booklet-Retriever",
@@ -37,13 +40,13 @@ retriever_tool = create_retriever_tool(
 
 
 db = SQLDatabase.from_uri("sqlite:///../docs/demo.db")
-print(db.dialect)
-print(db.get_usable_table_names())
+# print(db.dialect)
+# print(db.get_usable_table_names())
 
 
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 db_tools = toolkit.get_tools()
-print(db_tools)
+# print(db_tools)
 
 
 SQL_PREFIX = """You are an agent designed to interact with a SQL database.
@@ -63,5 +66,12 @@ Then you should query the schema of the most relevant tables."""
 
 system_message = SystemMessage(content=SQL_PREFIX)
 
-tools = [retriever_tool, *db_tools]
+tools = [
+    calculate_income_tax,
+    retriever_tool,
+    *db_tools
+]
 agent_executor = create_react_agent(llm, tools, checkpointer=memory, messages_modifier=system_message)
+
+# More tools:
+# https://python.langchain.com/docs/integrations/tools/
