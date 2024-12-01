@@ -42,4 +42,4 @@ if __name__ == "__main__":
         textbox = gr.Textbox(lines=1, label="Chat Message")
         textbox.submit(interact_with_langchain_agent, [thread_textbox, textbox, chatbot], [textbox, chatbot])
 
-    demo.launch()
+    demo.launch(share=True)

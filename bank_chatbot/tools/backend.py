@@ -40,13 +40,13 @@ retriever_tool = create_retriever_tool(
 
 
 db = SQLDatabase.from_uri("sqlite:///../docs/demo.db")
-# print(db.dialect)
-# print(db.get_usable_table_names())
+print(db.dialect)
+print(db.get_usable_table_names())
 
 
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 db_tools = toolkit.get_tools()
-# print(db_tools)
+print(db_tools)
 
 
 SQL_PREFIX = """You are an agent designed to interact with a SQL database.
@@ -71,7 +71,10 @@ tools = [
     retriever_tool,
     *db_tools
 ]
-agent_executor = create_react_agent(llm, tools, checkpointer=memory, messages_modifier=system_message)
+agent_executor = create_react_agent(
+    llm, tools, checkpointer=memory,
+    messages_modifier=system_message
+)
 
 # More tools:
 # https://python.langchain.com/docs/integrations/tools/

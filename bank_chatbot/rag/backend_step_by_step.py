@@ -23,10 +23,10 @@ load_dotenv()
 loader = PyPDFLoader("../docs/59321_booklet_guide_mashknta_A4_Pages_03.pdf",)
 docs = loader.load()
 
-print(f"Total docs: {len(docs)}")
-print(f"Example doc metadata: {docs[0].metadata}")
-print(f"Example snippet of doc content: {docs[5].page_content[:200]}")
-print(f'Total characters in all docs: {sum([len(doc.page_content) for doc in docs])}')
+# print(f"Total docs: {len(docs)}")
+# print(f"Example doc metadata: {docs[0].metadata}")
+# print(f"Example snippet of doc content: {docs[5].page_content[:200]}")
+# print(f'Total characters in all docs: {sum([len(doc.page_content) for doc in docs])}')
 
 
 # INDEXING: SPLIT
@@ -37,18 +37,17 @@ text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200, add_start_index=True
 )
 all_splits = text_splitter.split_documents(docs)
-print(f"Splits number: {len(all_splits)}")
-print(f"Example split content: {all_splits[27].page_content}")
-print(f"Example split metadata: {all_splits[27].metadata}")
-
+# print(f"Splits number: {len(all_splits)}")
+# print(f"Example split content: {all_splits[27].page_content}")
+# print(f"Example split metadata: {all_splits[27].metadata}")
+#
 
 # INDEXING: STORE
 # We are using Chroma vector store and OpenAIEmbeddings model
 example_text = "How much I mortgage I can get?"
 embedding_model = OpenAIEmbeddings()
-print(f"Example embedding for text {example_text}:\n{embedding_model.embed_query(example_text)}")
+# print(f"Example embedding for text {example_text}:\n{embedding_model.embed_query(example_text)}")
 
-embedding_example = OpenAIEmbeddings().embed_query("cat")
 vectorstore = Chroma.from_documents(
     documents=all_splits,
     embedding=embedding_model,
@@ -56,10 +55,10 @@ vectorstore = Chroma.from_documents(
 )
 
 results = vectorstore.similarity_search(example_text)
-print(f"Found {len(results)} chunks with context for {example_text}")
-for r in results:
-    print(f"Metadata: {r.metadata}")
-    print(f"Content: {r.page_content}")
+# print(f"Found {len(results)} chunks with context for {example_text}")
+# for r in results:
+#     print(f"Metadata: {r.metadata}")
+#     print(f"Content: {r.page_content}")
 
 
 # RETRIEVAL AND GENERATION: RETRIEVAL
@@ -72,7 +71,7 @@ for r in results:
 # limit the number of documents k returned by the retriever to 6
 
 retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
-retrieved_docs = retriever.invoke(example_text)
+# retrieved_docs = retriever.invoke(example_text)
 
 
 # RETRIEVAL AND GENERATION: GENERATE
@@ -86,11 +85,11 @@ open_ai_model = ChatOpenAI(model="gpt-4o-mini")
 
 
 prompt = hub.pull("rlm/rag-prompt")
-example_messages = prompt.invoke(
-    {"context": "filler context", "question": "filler question"}
-).to_messages()
-print(example_messages)
-print(example_messages[0].content)
+# example_messages = prompt.invoke(
+#     {"context": "filler context", "question": "filler question"}
+# ).to_messages()
+# print(example_messages)
+# print(example_messages[0].content)
 
 
 def format_docs(original_docs):
