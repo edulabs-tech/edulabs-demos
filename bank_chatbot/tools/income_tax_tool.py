@@ -1,4 +1,11 @@
+from langchain_openai import ChatOpenAI
+from langgraph.prebuilt import create_react_agent
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.tools import tool
+from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+load_dotenv()
 
 
 @tool
@@ -30,3 +37,35 @@ def calculate_income_tax(annual_income):
         tax += (annual_income - 721560) * 0.03
 
     return tax
+
+
+# llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+tools = [
+    calculate_income_tax,
+]
+
+
+agent_executor = create_react_agent(
+    llm,
+    tools
+)
+
+# def save_graph_png():
+#     agent_executor.get_graph().draw_mermaid_png(output_file_path="graph.png")
+#
+#
+if __name__ == '__main__':
+    # save_graph_png()
+
+    if __name__ == '__main__':
+        while True:
+            user_input = input("User: ")
+            if user_input.lower() in ["quit", "exit", "q"]:
+                print("Goodbye!")
+                break
+
+            ai_response = agent_executor.invoke({"messages": user_input})
+            [m.pretty_print() for m in ai_response["messages"]]
+            print("---------------------------------------------")
+

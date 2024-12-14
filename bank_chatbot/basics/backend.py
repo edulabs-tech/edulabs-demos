@@ -70,7 +70,10 @@ def invoke_with_trim(text, history, language, model_type="Gemini"):
 
 def invoke_llm(text, history, language, model_type="Gemini"):
     chain = open_ai_chain if model_type == "Open AI" else gemini_chain
-    return chain.invoke({"assistant_name": "David", "language": language, "text": text, "history": history})
+    return chain.invoke({"assistant_name": "David",
+                         "language": language,
+                         "text": text,
+                         "history": history})
 
 
 def stream_llm(text, history, language, model_type="Gemini"):

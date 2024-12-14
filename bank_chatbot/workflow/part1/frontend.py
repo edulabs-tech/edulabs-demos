@@ -1,4 +1,4 @@
-from bank_chatbot.workflow.backend import stream_graph_updates
+from bank_chatbot.workflow.part1.backend import stream_graph_updates
 
 if __name__ == '__main__':
     while True:

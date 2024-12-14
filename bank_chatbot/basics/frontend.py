@@ -9,8 +9,8 @@ if __name__ == "__main__":
 
         gr.ChatInterface(
             # invoke_llm,
-            stream_llm,
-            # invoke_with_trim,
+            # stream_llm,
+            invoke_with_trim,
             type="messages",
             multimodal=False,
             theme="soft",
