@@ -8,9 +8,9 @@ if __name__ == "__main__":
         language = gr.Dropdown(["English", "Hebrew"], label="Select language:")
 
         gr.ChatInterface(
-            # invoke_llm,
+            invoke_llm,
             # stream_llm,
-            invoke_with_trim,
+            # invoke_with_trim,
             type="messages",
             multimodal=False,
             theme="soft",

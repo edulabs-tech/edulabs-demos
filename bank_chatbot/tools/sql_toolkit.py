@@ -1,11 +1,8 @@
 from pprint import pprint
 
 from dotenv import load_dotenv
-from langchain.tools.retriever import create_retriever_tool
-from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_community.utilities import SQLDatabase
@@ -18,27 +15,8 @@ load_dotenv()
 
 # Add memory to the process
 memory = MemorySaver()
+
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-
-
-# Construct retriever
-loader = PyPDFLoader("../docs/59321_booklet_guide_mashknta_A4_Pages_03.pdf",)
-docs = loader.load()
-
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-splits = text_splitter.split_documents(docs)
-vectorstore = InMemoryVectorStore.from_documents(
-    documents=splits, embedding=OpenAIEmbeddings()
-)
-retriever = vectorstore.as_retriever()
-
-
-# Build tool
-retriever_tool = create_retriever_tool(
-    retriever,
-    "Mortgage-Booklet-Retriever",
-    "Searches and returns excerpts from the mortgage guide booklet",
-)
 
 
 db = SQLDatabase.from_uri("sqlite:///../docs/demo.db")
@@ -51,9 +29,9 @@ db_tools = toolkit.get_tools()
 pprint(db_tools)
 
 
-SQL_PREFIX = """You are a friendly assistant in bank Hapoalim.
-You can do various things, you can also interact with a SQL database.
-Given an input question, if it relates to database, create a syntactically correct SQLite query to run, then look at the results of the query and return the answer.
+SQL_PREFIX = """You are an agent designed to interact with a SQL database.
+Given an input question, create a syntactically correct SQLite query to run, then look at the results of the query and return the answer.
+Unless the user specifies a specific number of examples they wish to obtain, always limit your query to at most 5 results.
 You can order the results by a relevant column to return the most interesting examples in the database.
 Never query for all the columns from a specific table, only ask for the relevant columns given the question.
 You have access to tools for interacting with the database.
@@ -68,14 +46,10 @@ Then you should query the schema of the most relevant tables."""
 
 system_message = SystemMessage(content=SQL_PREFIX)
 
-tools = [
-    calculate_income_tax,
-    retriever_tool,
-    *db_tools
-]
-agent_executor = create_react_agent(
+
+sql_agent_executor = create_react_agent(
     llm,
-    tools,
+    db_tools,
     checkpointer=memory,
     messages_modifier=system_message
 )

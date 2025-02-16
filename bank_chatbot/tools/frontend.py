@@ -2,7 +2,14 @@ import gradio as gr
 from gradio import ChatMessage
 from langchain_core.messages import HumanMessage, AIMessage
 
-from bank_chatbot.tools.backend import agent_executor
+
+# uncomment this to use agent with sql tools only
+from bank_chatbot.tools.sql_toolkit import sql_agent_executor as agent_executor
+
+# uncomment this to use agent with sql tools, RAG, and custome income_tax_calculator tool
+# from bank_chatbot.tools.backend import agent_executor
+
+
 
 
 def interact_with_langchain_agent(thread_id, prompt, messages):

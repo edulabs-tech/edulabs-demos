@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from typing import Annotated
 
+from langgraph.checkpoint.memory import MemorySaver
 from typing_extensions import TypedDict
 
 from langgraph.graph import StateGraph, START, END
@@ -113,11 +114,15 @@ graph_builder.add_conditional_edges(
     # e.g., "tools": "my_tools"
     # {"tools": "tools", END: END},
 )
-graph = graph_builder.compile()
+memory = MemorySaver()
+graph = graph_builder.compile(
+    checkpointer=memory
+)
 
 
 def stream_graph_updates(user_input: str):
-    for event in graph.stream({"messages": [("user", user_input)]}):
+    config = {"configurable": {"thread_id": "aaaaa"}}
+    for event in graph.stream({"messages": [("user", user_input)]}, config):
         for value in event.values():
             print("Assistant:", value["messages"][-1].content)
 

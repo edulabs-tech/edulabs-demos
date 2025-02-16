@@ -27,6 +27,7 @@ prompt_template = ChatPromptTemplate.from_messages([
 
 open_ai_model = ChatOpenAI(model="gpt-4o-mini")
 gemini_model = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+# llama
 
 parser = StrOutputParser()
 

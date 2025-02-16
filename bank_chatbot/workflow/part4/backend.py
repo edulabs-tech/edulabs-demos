@@ -49,7 +49,7 @@ memory = MemorySaver()
 
 system_intention_template = """
     You are a friendly customer assistant at Bank Hapoalim.
-    You are going to great a customer and assist him with his questions
+    You are going to greet a customer and assist him with his questions
 """
 prompt_template = ChatPromptTemplate.from_messages([
     ("system", system_intention_template),
