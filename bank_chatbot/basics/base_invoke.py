@@ -1,10 +1,14 @@
 from pprint import pprint
 
 from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
-open_ai_model = ChatOpenAI(model="gpt-4o-mini")
-response = open_ai_model.invoke("Hi")
-pprint(response.dict())
+# model = ChatOpenAI(model="gpt-4o-mini")
+model = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+
+
+response = model.invoke("Hi")
+response.pretty_print()

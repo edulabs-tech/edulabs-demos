@@ -69,7 +69,7 @@ and his role in the founding of the Boring Company, xAI, Neuralink, and OpenAI.
 Musk is the wealthiest individual in the world; 
 as of December 2024, Forbes estimates his net worth to be US$432 billion.
 """
-result = structured_llm.invoke(text)
+result = llm.with_structured_output(json_schema).invoke(text)
 pprint.pprint(result)
 pprint.pprint(type(result[0]['args']))
 

@@ -49,7 +49,7 @@ open_ai_trimmer = trim_messages(
     token_counter=open_ai_model,
     include_system=True,
     allow_partial=False,
-    start_on="human",
+    start_on="human"
 )
 
 

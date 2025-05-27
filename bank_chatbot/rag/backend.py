@@ -25,7 +25,6 @@ text_splitter = RecursiveCharacterTextSplitter(
 all_splits = text_splitter.split_documents(docs)
 
 # INDEXING: STORE
-embedding_example = OpenAIEmbeddings().embed_query("cat")
 vectorstore = Chroma.from_documents(
     documents=all_splits,
     embedding=OpenAIEmbeddings(),
