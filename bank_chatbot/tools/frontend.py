@@ -2,12 +2,20 @@ import gradio as gr
 from gradio import ChatMessage
 from langchain_core.messages import HumanMessage, AIMessage
 
+# uncomment this for agent execution with python tool
+# from bank_chatbot.tools.react_agent_with_code_execution import agent_executor
+
+# uncomment this for retrieval_tool
+# from bank_chatbot.tools.react_agent_with_retrieval import agent_executor
+
+# uncomment this for income_tax_tool
+# from bank_chatbot.tools.income_tax_tool import agent_executor
 
 # uncomment this to use agent with sql tools only
-from bank_chatbot.tools.sql_toolkit import sql_agent_executor as agent_executor
+# from bank_chatbot.tools.sql_toolkit import sql_agent_executor as agent_executor
 
 # uncomment this to use agent with sql tools, RAG, and custome income_tax_calculator tool
-# from bank_chatbot.tools.backend import agent_executor
+from bank_chatbot.tools.backend import agent_executor
 
 
 

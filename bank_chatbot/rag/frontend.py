@@ -11,3 +11,6 @@ if __name__ == "__main__":
             theme="soft"
         )
     demo.launch(share=False)
+
+
+# how much mortgage i can get for 3000000 ils apartment?

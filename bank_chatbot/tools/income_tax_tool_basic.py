@@ -7,6 +7,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 load_dotenv()
 
+# https://python.langchain.com/docs/concepts/tool_calling/
 
 @tool
 def calculate_income_tax(annual_income):

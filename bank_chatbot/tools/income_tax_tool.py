@@ -1,4 +1,5 @@
 from langchain_openai import ChatOpenAI
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.tools import tool
@@ -45,10 +46,11 @@ tools = [
     calculate_income_tax,
 ]
 
-
+memory = MemorySaver()
 agent_executor = create_react_agent(
     llm,
-    tools
+    tools,
+    checkpointer=memory
 )
 
 # def save_graph_png():
