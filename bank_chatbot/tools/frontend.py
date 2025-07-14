@@ -12,10 +12,10 @@ from langchain_core.messages import HumanMessage, AIMessage
 # from bank_chatbot.tools.income_tax_tool import agent_executor
 
 # uncomment this to use agent with sql tools only
-# from bank_chatbot.tools.sql_toolkit import sql_agent_executor as agent_executor
+from bank_chatbot.tools.sql_toolkit import sql_agent_executor as agent_executor
 
 # uncomment this to use agent with sql tools, RAG, and custome income_tax_calculator tool
-from bank_chatbot.tools.backend import agent_executor
+# from bank_chatbot.tools.backend import agent_executor
 
 
 

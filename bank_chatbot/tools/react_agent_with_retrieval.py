@@ -15,7 +15,7 @@ llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 retriever_tool = create_retriever_tool(
     retriever,
     name="search_movies",
-    description="Search for informaiton about movies",
+    description="Search for information about movies",
 )
 tools = [
     retriever_tool,

@@ -67,6 +67,7 @@ metadata_field_info = [
 ]
 document_content_description = "Brief summary of a movie"
 llm = OpenAI(temperature=0)
+# llm = OpenAI(model='gpt-4o-mini', temperature=0)
 retriever = SelfQueryRetriever.from_llm(
     llm, vectorstore, document_content_description, metadata_field_info, verbose=True
 )
@@ -75,9 +76,15 @@ retriever = SelfQueryRetriever.from_llm(
 # This example only specifies a relevant query
 # response = retriever.invoke("What are some movies about dinosaurs")
 # print(response)
+
+# This example only specifies a filter
+# response = retriever.invoke("I want to watch a movie rated higher than 8.5")
+# print(response)
+
 # # This example specifies a composite filter
 # response = retriever.invoke("What's a highly rated (above 8.5) science fiction film?")
 # print(response)
-# # This example specifies a query and a filter
-# response = retriever.invoke("Has Greta Gerwig directed any movies about women")
+
+# This example specifies a query and composite filter
+# response = retriever.invoke("What's a movie after 1990 but before 2005 that's all about toys, and preferably is animated")
 # print(response)

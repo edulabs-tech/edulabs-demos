@@ -1,6 +1,7 @@
 from pprint import pprint
 
 from dotenv import load_dotenv
+from langchain_core.output_parsers import StrOutputParser
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
@@ -26,7 +27,7 @@ db = SQLDatabase.from_uri("sqlite:///../docs/demo.db")
 
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 db_tools = toolkit.get_tools()
-pprint(db_tools)
+# pprint(db_tools)
 
 
 SQL_PREFIX = """You are an agent designed to interact with a SQL database.
@@ -44,18 +45,12 @@ To start you should ALWAYS look at the tables in the database to see what you ca
 Do NOT skip this step.
 Then you should query the schema of the most relevant tables."""
 
-system_message = SystemMessage(content=SQL_PREFIX)
 
+llm_with_tools = llm.bind_tools(db_tools)
 
-sql_agent_executor = create_react_agent(
-    llm,
-    db_tools,
-    checkpointer=memory,
-    messages_modifier=system_message
-)
+response = llm_with_tools.invoke([
+        ("system", SQL_PREFIX),
+        ("user", "What's my balance?")
+])
 
-
-
-
-# More tools:
-# https://python.langchain.com/docs/integrations/tools/
+print(response)
